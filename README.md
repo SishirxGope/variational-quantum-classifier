@@ -12,7 +12,7 @@ The model output for a point $\vec{x}$ is the expectation of a Pauli-$Z$ observa
 
 $$f(\vec{x};\vec\theta,b) = \langle 0 | \, S^\dagger(\vec{x})\, W^\dagger(\vec\theta)\, Z_0\, W(\vec\theta)\, S(\vec{x}) \,|0\rangle + b \;\in\; [-1, 1]$$
 
-Class predictions are $\hat{y} = \operatorname{sign} f(\vec{x})$, and we minimize the square loss against labels $y \in \{-1, +1\}$.
+Class predictions are $\hat{y} = \mathrm{sign}\, f(\vec{x})$, and we minimize the square loss against labels $y \in \{-1, +1\}$.
 
 The central question of the VQC is not *"can it represent the boundary?"* but *"can it be trained to?"* — the tension between **expressibility** (how much of Hilbert space the ansatz can reach) and **trainability** (whether gradients are large enough to optimize). This project makes that tension measurable.
 
