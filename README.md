@@ -1,7 +1,7 @@
 # Trainability and Expressibility of Variational Quantum Classifiers: An Ansatz Comparison
 
 ## Abstract
-This project implements a **Variational Quantum Classifier (VQC)** — a parameterized quantum circuit trained end-to-end as a differentiable model — and studies how the choice of *ansatz* (the trainable circuit architecture) governs both accuracy and trainability. We compare three 2-qubit ansätze (Basic Entangler, Strongly Entangler, and a Hardware-Efficient CZ ring) on the non-linearly separable `two-moons` dataset, training via gradient descent with the **parameter-shift rule**. The Strongly Entangler achieves $93.3\%$ test accuracy, exceeding the classical linear baseline ($90.0\%$) and approaching a tuned classical RBF kernel ($95.0\%$), while the more expressive Hardware-Efficient ansatz collapses to $78.3\%$ — a concrete trainability failure. We further (i) verify numerically that the parameter-shift rule reproduces the exact analytic gradient to machine precision ($\sim 10^{-16}$), and (ii) reproduce the **barren-plateau** phenomenon, showing the gradient variance of a random circuit decaying by $\sim 6\times$ as the register grows from 2 to 6 qubits.
+This project implements a **Variational Quantum Classifier (VQC)** — a parameterized quantum circuit trained end-to-end as a differentiable model — and studies how the choice of *ansatz* (the trainable circuit architecture) governs both accuracy and trainability. I compare three 2-qubit ansätze (Basic Entangler, Strongly Entangler, and a Hardware-Efficient CZ ring) on the non-linearly separable `two-moons` dataset, training via gradient descent with the **parameter-shift rule**. The Strongly Entangler achieves $93.3\%$ test accuracy, exceeding the classical linear baseline ($90.0\%$) and approaching a tuned classical RBF kernel ($95.0\%$), while the more expressive Hardware-Efficient ansatz collapses to $78.3\%$ — a concrete trainability failure. I further (i) verify numerically that the parameter-shift rule reproduces the exact analytic gradient to machine precision ($\sim 10^{-16}$), and (ii) reproduce the **barren-plateau** phenomenon, showing the gradient variance of a random circuit decaying by $\sim 6\times$ as the register grows from 2 to 6 qubits.
 
 ---
 
@@ -12,7 +12,7 @@ The model output for a point $\vec{x}$ is the expectation of a Pauli-$Z$ observa
 
 $$f(\vec{x};\vec\theta,b) = \langle 0 | \, S^\dagger(\vec{x})\, W^\dagger(\vec\theta)\, Z_0\, W(\vec\theta)\, S(\vec{x}) \,|0\rangle + b \;\in\; [-1, 1]$$
 
-Class predictions are $\hat{y} = \mathrm{sign}\, f(\vec{x})$, and we minimize the square loss against labels $y \in \{-1, +1\}$.
+Class predictions are $\hat{y} = \mathrm{sign}\, f(\vec{x})$, and I minimize the square loss against labels $y \in \{-1, +1\}$.
 
 The central question of the VQC is not *"can it represent the boundary?"* but *"can it be trained to?"* — the tension between **expressibility** (how much of Hilbert space the ansatz can reach) and **trainability** (whether gradients are large enough to optimize). This project makes that tension measurable.
 
@@ -21,7 +21,7 @@ The central question of the VQC is not *"can it represent the boundary?"* but *"
 ## 2. Methodology
 
 ### 2.1 Dataset and Encoding
-We use the `two-moons` dataset ($N=200$, noise $=0.20$), a canonical non-linearly separable binary problem, scaled to $[0, \pi]$ to match rotation-gate periods. Data is loaded by **angle embedding** ($R_Y$ rotations) and *re-uploaded* before every trainable layer, so circuit depth increases the effective non-linearity of the model (cf. Project 03, Data Re-Uploading).
+I use the `two-moons` dataset ($N=200$, noise $=0.20$), a canonical non-linearly separable binary problem, scaled to $[0, \pi]$ to match rotation-gate periods. Data is loaded by **angle embedding** ($R_Y$ rotations) and *re-uploaded* before every trainable layer, so circuit depth increases the effective non-linearity of the model (cf. Project 03, Data Re-Uploading).
 
 ### 2.2 Ansätze
 Three trainable blocks of increasing structure are compared (**Figure 1**):
@@ -40,7 +40,7 @@ Parameters are optimized with **Adam** (step $0.1$, 45 epochs, mini-batch 25) ag
 
 $$\frac{\partial \langle Z \rangle}{\partial \theta_k} = \frac{1}{2}\Big[\, f\big(\theta_k + \tfrac{\pi}{2}\big) - f\big(\theta_k - \tfrac{\pi}{2}\big) \Big]$$
 
-which is *exact* (not a finite-difference approximation) for gates of the form $e^{-i\theta P/2}$. We train on a simulator using fast backpropagation, but verify the parameter-shift equivalence explicitly (§3.3).
+which is *exact* (not a finite-difference approximation) for gates of the form $e^{-i\theta P/2}$. I train on a simulator using fast backpropagation, but verify the parameter-shift equivalence explicitly (§3.3).
 
 ### 2.4 Classical Baselines
 Linear and RBF SVMs are trained on the same split for reference.
@@ -72,14 +72,14 @@ Training dynamics (**Figure 2**) show the Strongly Entangler driving the loss do
 *Figure 2: Loss (left) and accuracy (right) vs. epoch. Dashed = train, solid = test. The Hardware-Efficient ansatz plateaus early — a trainability, not a capacity, failure.*
 
 ### 3.3 Parameter-Shift Rule Verification
-We compare, parameter by parameter, the gradient obtained from (a) the manual parameter-shift formula, (b) PennyLane autodiff, and (c) a central finite difference. The parameter-shift and autodiff gradients agree to
+I compare, parameter by parameter, the gradient obtained from (a) the manual parameter-shift formula, (b) PennyLane autodiff, and (c) a central finite difference. The parameter-shift and autodiff gradients agree to
 
 $$\max_k \big| \nabla^{\text{shift}}_k - \nabla^{\text{autodiff}}_k \big| = 1.11 \times 10^{-16}$$
 
 i.e. machine precision — confirming the rule is analytically exact, not approximate (**Figure 4**, left).
 
 ### 3.4 Barren Plateaus
-We measure the variance of a single circuit gradient $\partial_\theta \langle Z_0 Z_1 \rangle$ over 60 random parameter initializations of a depth-4 hardware-efficient circuit, as a function of qubit count:
+I measure the variance of a single circuit gradient $\partial_\theta \langle Z_0 Z_1 \rangle$ over 60 random parameter initializations of a depth-4 hardware-efficient circuit, as a function of qubit count:
 
 *Table 2: Gradient variance vs. register size.*
 
