@@ -1,0 +1,8 @@
+BasicEntangler	params=7	train=0.829	test=0.883
+StronglyEntangler	params=19	train=0.864	test=0.933
+HardwareEfficient	params=19	train=0.750	test=0.783
+Linear	test=0.900
+RBF	test=0.950
+param_shift_max_err=1.11e-16
+barren_qubits=[2, 3, 4, 5, 6]
+barren_variances=[0.08293136572153241, 0.08588310436764338, 0.025539573254429234, 0.018427406570337597, 0.013100021562018985]
